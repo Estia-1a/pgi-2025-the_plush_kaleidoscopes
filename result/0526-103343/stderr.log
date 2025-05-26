@@ -1,0 +1,9 @@
+/usr/bin/ld: CMakeFiles/freud.dir/src/main.c.o: in function `main':
+main.c:(.text.startup+0x1b9): undefined reference to `min_pixel'
+/usr/bin/ld: main.c:(.text.startup+0x1cc): undefined reference to `max_pixel'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:151: freud] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
