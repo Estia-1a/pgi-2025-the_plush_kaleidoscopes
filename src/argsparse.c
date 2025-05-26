@@ -95,4 +95,5 @@ void check_debug_mode(Config conf) {
         }
         printf( "option: %s\n", conf.command );
   }
+  
 }

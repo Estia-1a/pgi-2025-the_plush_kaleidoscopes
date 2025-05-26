@@ -95,5 +95,4 @@ void print_pixel(char *source_path, int x, int y){
     else {
         printf("ERROR");
     }
-
 }
