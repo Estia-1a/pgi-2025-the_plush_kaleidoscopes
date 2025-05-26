@@ -14,6 +14,7 @@
 void helloWorld() {
     printf("Hello World !!!");
 }
+
 void dimension (char *source_path){
     int width;
     int height;
@@ -28,6 +29,7 @@ void dimension (char *source_path){
         printf("ERROR");
     }
 }
+
 void first_pixel (char *source_path){
     int width;
     int height;
@@ -61,6 +63,7 @@ unsigned char *data;
         printf("ERROR");
     }
 }
+
 void second_line(char *source_path){
     unsigned char *data;
     int width;
@@ -76,9 +79,10 @@ void second_line(char *source_path){
         }
     }
     else {
-        printf("ERROR");
+        printf("ERROR\n");
     }
 }
+
 void print_pixel(char *source_path, int x, int y){
     int width;
     int height;
@@ -90,10 +94,52 @@ void print_pixel(char *source_path, int x, int y){
         R = data[position];
         G = data[position+1];
         B = data[position+2];
-        printf("print_pixel (%d, %d): %d, %d, %d", x, y, R, G, B);
+        printf("print_pixel (%d, %d): %d, %d, %d \n", x, y, R, G, B);
     }
     else {
-        printf("ERROR");
+        printf("ERROR\n");
     }
 
+}
+
+void max_pixel(char *source_path, int x, int y){
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char * data;
+    int R,G,B;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        int max_sum = -1;
+        int max_x = 0;
+        int max_y = 0;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int position = (y * width + x) * nbChannels;
+
+                R = data[position];
+                G = data[position + 1];
+                B = data[position + 2];
+
+                int sum = R + G + B;
+
+                if (sum > max_sum) {
+                    max_sum = sum;
+                    max_x = x;
+                    max_y = y;
+                }
+            }
+        }
+
+        unsigned int max_position = (max_y * width + max_x) * nbChannels;
+        R = data[max_position];
+        G = data[max_position + 1];
+        B = data[max_position + 2];
+
+        printf("max_pixel (%d, %d): %d, %d, %d\n", max_x, max_y, R, G, B);
+    }
+    else {
+        printf("ERROR\n");
+    }
 }
