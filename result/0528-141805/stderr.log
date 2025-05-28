@@ -1,0 +1,13 @@
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:105:6: error: conflicting types for ‘max_pixel’; have ‘void(char *, int,  int)’
+  105 | void max_pixel(char *source_path, int x, int y){
+      |      ^~~~~~~~~
+In file included from /home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:4:
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.h:11:6: note: previous declaration of ‘max_pixel’ with type ‘void(char *)’
+   11 | void max_pixel (char *source_path);
+      |      ^~~~~~~~~
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:93: CMakeFiles/freud.dir/src/features.c.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
