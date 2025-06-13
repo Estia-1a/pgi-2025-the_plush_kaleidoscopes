@@ -70,5 +70,8 @@ int main(int argc, char **argv) {
   if ( strncmp( configuration.command, "color_gray", 10 ) == 0 ) {
     color_gray(configuration.filenames[0]);
   }
+  if ( strncmp( configuration.command, "color_gray_luminance",20 ) == 0 ) {
+    color_gray_luminance(configuration.filenames[0]);
+  }
   return 0;
 }
