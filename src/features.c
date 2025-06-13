@@ -102,7 +102,7 @@ void print_pixel(char *source_path, int x, int y){
 
 }
 
-void max_pixel(char *source_path, int x, int y){
+void max_pixel(char *source_path){
     int width;
     int height;
     int nbChannels;
@@ -143,3 +143,46 @@ void max_pixel(char *source_path, int x, int y){
         printf("ERROR\n");
     }
 }
+
+void min_pixel(char *source_path){
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char * data;
+    int R,G,B;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        int min_sum = 3 * 255;
+        int min_x = 0;
+        int min_y = 0;
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int position = (y * width + x) * nbChannels;
+
+                R = data[position];
+                G = data[position + 1];
+                B = data[position + 2];
+
+                int sum = R + G + B;
+
+                if (sum < min_sum) {
+                    min_sum = sum;
+                    min_x = x;
+                    min_y = y;
+                }
+            }
+        }
+
+        unsigned int min_position = (min_y * width + min_x) * nbChannels;
+        R = data[min_position];
+        G = data[min_position + 1];
+        B = data[min_position + 2];
+
+        printf("min_pixel (%d, %d): %d, %d, %d\n", min_x, min_y, R, G, B);
+    }
+    else {
+        printf("ERROR\n");
+    }
+}
+
