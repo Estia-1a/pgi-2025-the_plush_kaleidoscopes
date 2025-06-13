@@ -186,3 +186,26 @@ void min_pixel(char *source_path){
     }
 }
 
+void color_red(char *source_path){
+    unsigned char *data;
+    int height;
+    int width;
+    int channel_count;
+    int statut;
+    int etat;
+    etat = read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    if(etat!=0){
+        int position = 0;
+        for(int i=0; i<width*height;i++){
+            position = i*channel_count;
+            data[position+1]=0;
+            data[position+2]=0;
+        }
+    }
+    statut = write_image_data("image_out.bmp",data,width,height);
+    if (statut == 0){
+        printf("Erreur de generation de l'image");
+    }
+}
+
