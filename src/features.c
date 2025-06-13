@@ -262,3 +262,33 @@ void color_blue (char *source_path){
     }
 
 }
+void color_gray (char *source_path){
+     unsigned char *data;
+    int height;
+    int width;
+    int channel_count;
+    int statut;
+    int etat;
+    int value;
+
+    etat = read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    if(etat!=0){
+        int position = 0;
+        for(int i=0;i<width*height;i++){
+            position = i*channel_count;
+            value = (data[position]+data[position+1]+data[position+2])/3;
+            data[position]=value;
+            data[position+1]=value;
+            data[position+2]=value;
+        }
+    }
+
+    statut = write_image_data("image_out.bmp",data,width, height);
+
+    if (statut == 0)
+    {
+        printf("Erreur de generation de l'image");
+    }
+
+}
