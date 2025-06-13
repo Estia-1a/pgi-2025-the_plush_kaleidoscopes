@@ -223,6 +223,42 @@ void max_component(char *source_path, char component) {
         printf("ERROR\n");
     }
 }
+void min_component(char *source_path, char component) {
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char *data;
+    int min_value = 256;
+    int min_x = 0, min_y = 0;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        int comp_index = -1;
+        component = toupper((unsigned char)component);
+        if (component == 'R') comp_index = 0;
+        else if (component == 'G') comp_index = 1;
+        else if (component == 'B') comp_index = 2;
+        else {
+            printf("ERROR: Invalid component\n");
+            return;
+        }
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int position = (y * width + x) * nbChannels;
+                int value = data[position + comp_index];
+                if (value < min_value) {
+                    min_value = value;
+                    min_x = x;
+                    min_y = y;
+                }
+            }
+        }
+        printf("min_component %c (%d, %d): %d\n", component, min_x, min_y, min_value);
+    } else {
+        printf("ERROR\n");
+    }
+}
+
 void color_red(char *source_path){
     unsigned char *data;
     int height;
