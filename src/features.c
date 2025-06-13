@@ -186,60 +186,7 @@ void min_pixel(char *source_path){
     }
 }
 
-/*void max_component(char *source_path){
-    int width;
-    int height;
-    int nbChannels;
-    unsigned char * data;
-    int R,G,B;
-
-    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
-        int max_value = -1;
-        int max_x = 0;
-        int max_y = 0;
-
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                unsigned int position = (y * width + x) * nbChannels;
-
-                R = data[position];
-                G = data[position + 1];
-                B = data[position + 2];
-
-                if (R > max_value) {
-                    max_value = R;
-                    max_x = x;
-                    max_y = y;
-                }
-                if (G > max_value) {
-                    max_value = G;
-                    max_x = x;
-                    max_y = y;
-                }
-                if (B > max_value) {
-                    max_value = B;
-                    max_x = x;
-                    max_y = y;
-                }
-            }
-        }
-
-        unsigned int max_position = (max_y * width + max_x) * nbChannels;
-        R = data[max_position];
-        G = data[max_position + 1];
-        B = data[max_position + 2];
-        
-        printf("max_component (%d, %d): %d, %d, %d\n", max_x, max_y, R, G, B);
-    }
-    else {
-        printf("ERROR\n");
-    }
-}
-
-*/
-
-#include <stdio.h>
-#include <ctype.h> // Pour toupper
+#include <ctype.h> 
 
 void max_component(char *source_path, char component) {
     int width;
