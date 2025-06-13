@@ -88,12 +88,12 @@ void print_pixel(char *source_path, int x, int y){
     int height;
     int nbChannels;
     unsigned char * data;
-    int R,G,B;
-    if (read_image_data(source_path, &data, &width, &height, &nbChannels) !=0){
-        unsigned int position = 3*(y*width+x);
+    int R, G, B;
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        unsigned int position = (y * width + x) * nbChannels;
         R = data[position];
-        G = data[position+1];
-        B = data[position+2];
+        G = data[position + 1];
+        B = data[position + 2];
         printf("print_pixel (%d, %d): %d, %d, %d \n", x, y, R, G, B);
     }
     else {
@@ -186,6 +186,43 @@ void min_pixel(char *source_path){
     }
 }
 
+#include <ctype.h> 
+
+void max_component(char *source_path, char component) {
+    int width;
+    int height;
+    int nbChannels;
+    unsigned char *data;
+    int max_value = -1;
+    int max_x = 0, max_y = 0;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        int comp_index = -1;
+        component = toupper((unsigned char)component);
+        if (component == 'R') comp_index = 0;
+        else if (component == 'G') comp_index = 1;
+        else if (component == 'B') comp_index = 2;
+        else {
+            printf("ERROR: Invalid component\n");
+            return;
+        }
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int position = (y * width + x) * nbChannels;
+                int value = data[position + comp_index];
+                if (value > max_value) {
+                    max_value = value;
+                    max_x = x;
+                    max_y = y;
+                }
+            }
+        }
+        printf("max_component %c (%d, %d): %d\n", component, max_x, max_y, max_value);
+    } else {
+        printf("ERROR\n");
+    }
+}
 void color_red(char *source_path){
     unsigned char *data;
     int height;
