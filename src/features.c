@@ -260,7 +260,6 @@ void color_blue (char *source_path){
     {
         printf("Erreur de generation de l'image");
     }
-
 }
 void color_gray (char *source_path){
      unsigned char *data;
@@ -290,5 +289,41 @@ void color_gray (char *source_path){
     {
         printf("Erreur de generation de l'image");
     }
+}
+void color_gray_luminance(char *source_path){
+    unsigned char *data;
+    int height;
+    int width;
+    int channel_count;
+    int statut;
+    int etat;
+    int value;
 
+    etat = read_image_data(source_path, &data, &width, &height, &channel_count);
+
+    if(etat!=0){
+        /*for(int y=0; y<height; y++){
+            for(int x=0; x<width; x++ ){
+                value = (get_pixel(data, width, height, channel_count, x, y)->R + get_pixel(data, width, height, channel_count, x, y)->G + get_pixel(data, width, height, channel_count, x, y)->B)/3;
+                data[x*y*channel_count] = value;
+                data[x*y*channel_count+1] = value;
+                data[x*y*channel_count+2] = value;
+            }
+        }*/
+        int position = 0;
+        for(int i=0;i<width*height;i++){
+            position = i*channel_count;
+            value = (0.21*data[position]+0.72*data[position+1]+0.07*data[position+2]);
+            data[position]=value;
+            data[position+1]=value;
+            data[position+2]=value;
+        }
+    }
+
+    statut = write_image_data("image_out.bmp",data,width, height);
+
+    if (statut == 0)
+    {
+        printf("Erreur de generation de l'image");
+    }
 }
