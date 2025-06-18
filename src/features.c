@@ -494,3 +494,33 @@ void rotate_acw(char *source_path) {
     free(data);
     free(rotated);
 }
+
+void mirror_horizontal(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    unsigned char *mirrored = malloc(width * height * nbChannels);
+    if (!mirrored) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int src_idx = (y * width + x) * nbChannels;
+            int dst_x = width - 1 - x;
+            int dst_idx = (y * width + dst_x) * nbChannels;
+            memcpy(mirrored + dst_idx, data + src_idx, nbChannels);
+        }
+    }
+
+    write_image_data("image_out.bmp", mirrored, width, height);
+    free(data);
+    free(mirrored);
+}
