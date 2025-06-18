@@ -554,3 +554,34 @@ void mirror_vertical(char *source_path) {
     free(data);
     free(mirrored);
 }
+
+void mirror_total(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    unsigned char *mirrored = malloc(width * height * nbChannels);
+    if (!mirrored) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int src_idx = (y * width + x) * nbChannels;
+            int dst_x = width - 1 - x;
+            int dst_y = height - 1 - y;
+            int dst_idx = (dst_y * width + dst_x) * nbChannels;
+            memcpy(mirrored + dst_idx, data + src_idx, nbChannels);
+        }
+    }
+
+    write_image_data("image_out.bmp", mirrored, width, height);
+    free(data);
+    free(mirrored);
+}
