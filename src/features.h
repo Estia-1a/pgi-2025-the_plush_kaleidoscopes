@@ -19,5 +19,6 @@ void color_gray (char *source_path);
 void color_gray_luminance (char *source_path);
 void scale_crop (char *source_path, int center_x, int center_y, int crop_width, int crop_height);
 void rotate_cw (char *source_path);
+void rotate_acw (char *source_path);
 #endif
 

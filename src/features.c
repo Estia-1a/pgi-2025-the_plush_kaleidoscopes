@@ -464,3 +464,33 @@ void rotate_cw(char *source_path) {
     free(rotated);
 }
 
+void rotate_acw(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    unsigned char *rotated = malloc(width * height * nbChannels);
+    if (!rotated) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int src_idx = (y * width + x) * nbChannels;
+            int dst_x = y;
+            int dst_y = width - 1 - x;
+            int dst_idx = (dst_y * height + dst_x) * nbChannels;
+            memcpy(rotated + dst_idx, data + src_idx, nbChannels);
+        }
+    }
+
+    write_image_data("image_out.bmp", rotated, height, width);
+    free(data);
+    free(rotated);
+}
