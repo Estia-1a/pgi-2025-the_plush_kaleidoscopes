@@ -1,6 +1,7 @@
 #include <estia-image.h>
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 #include "features.h"
 #include "utils.h"
 
@@ -393,3 +394,73 @@ void color_gray_luminance(char *source_path){
         printf("Erreur de generation de l'image");
     }
 }
+
+void scale_crop(char *source_path, int center_x, int center_y, int crop_width, int crop_height) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+    unsigned char *out_data = malloc(crop_width * crop_height * nbChannels);
+    if (!out_data) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    int half_w = crop_width / 2;
+    int half_h = crop_height / 2;
+
+    for (int y = 0; y < crop_height; ++y) {
+        for (int x = 0; x < crop_width; ++x) {
+            int src_x = center_x - half_w + x;
+            int src_y = center_y - half_h + y;
+            unsigned char *dst_pixel = out_data + (y * crop_width + x) * nbChannels;
+
+            if (src_x >= 0 && src_x < width && src_y >= 0 && src_y < height) {
+                unsigned char *src_pixel = data + (src_y * width + src_x) * nbChannels;
+                memcpy(dst_pixel, src_pixel, nbChannels);
+            } else {
+                memset(dst_pixel, 0, nbChannels);
+            }
+        }
+    }
+    write_image_data("image_crop_out.bmp", out_data, crop_width, crop_height);
+
+    free(data);
+    free(out_data);
+}
+
+void rotate_cw(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    unsigned char *rotated = malloc(width * height * nbChannels);
+    if (!rotated) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            int src_idx = (y * width + x) * nbChannels;
+            int dst_x = height - 1 - y;
+            int dst_y = x;
+            int dst_idx = (dst_y * height + dst_x) * nbChannels;
+            memcpy(rotated + dst_idx, data + src_idx, nbChannels);
+        }
+    }
+
+    write_image_data("image_out.bmp", rotated, height, width);
+    free(data);
+    free(rotated);
+}
+

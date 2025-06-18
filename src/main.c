@@ -73,5 +73,18 @@ int main(int argc, char **argv) {
   if ( strncmp( configuration.command, "color_gray_luminance",20 ) == 0 ) {
     color_gray_luminance(configuration.filenames[0]);
   }
+  if ( strncmp( configuration.command, "scale_crop", 10 ) == 0 ) {
+    scale_crop(
+      configuration.filenames[0],
+      atoi(configuration.arguments[0]),
+      atoi(configuration.arguments[1]),
+      atoi(configuration.arguments[2]),
+      atoi(configuration.arguments[3])
+    );
+  }
+  if ( strncmp( configuration.command, "rotate_cw", 10 ) == 0 ) {
+    rotate_cw(configuration.filenames[0]);
+  }
+  
   return 0;
 }
