@@ -97,5 +97,8 @@ int main(int argc, char **argv) {
   if ( strncmp( configuration.command, "mirror_total", 13 ) == 0 ) {
     mirror_total(configuration.filenames[0]);
   }
+  if ( strncmp( configuration.command, "scale_nearest", 14 ) == 0 ) {
+    scale_nearest(configuration.filenames[0], atoi(configuration.arguments[0]));
+  }
   return 0;
 }
