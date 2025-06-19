@@ -640,3 +640,29 @@ void color_invert(char *source_path) {
     write_image_data("image_out.bmp", data, width, height);
     free(data);
 }
+
+void color_desaturate(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    for (int i = 0; i < width * height; ++i) {
+        int pos = i * nbChannels;
+        unsigned char R = data[pos];
+        unsigned char G = data[pos + 1];
+        unsigned char B = data[pos + 2];
+
+        unsigned char avg = (R + G + B) / 3;
+
+        data[pos] = avg;
+        data[pos + 1] = avg;
+        data[pos + 2] = avg;
+    }
+
+    write_image_data("image_out.bmp", data, width, height);
+    free(data);
+}
