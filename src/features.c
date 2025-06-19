@@ -623,3 +623,20 @@ void scale_nearest(char *source_path, float scale) {
     free(data);
     free(out_data);
 }
+
+void color_invert(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    for (int i = 0; i < width * height * nbChannels; ++i) {
+        data[i] = 255 - data[i];
+    }
+
+    write_image_data("image_out.bmp", data, width, height);
+    free(data);
+}

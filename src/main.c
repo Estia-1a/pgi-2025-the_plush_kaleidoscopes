@@ -101,5 +101,9 @@ int main(int argc, char **argv) {
     float scale = atof(argv[5]);
     scale_nearest(argv[2], scale);
   }
+  if ( strncmp( configuration.command, "color_invert", 12 ) == 0 ) {
+    color_invert(configuration.filenames[0]);
+  }
   return 0;
+
 }
