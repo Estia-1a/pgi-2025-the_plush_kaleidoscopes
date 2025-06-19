@@ -666,3 +666,89 @@ void color_desaturate(char *source_path) {
     write_image_data("image_out.bmp", data, width, height);
     free(data);
 }
+
+void stat_report(char *source_path) {
+    int width, height, nbChannels;
+    unsigned char *data;
+
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
+        printf("ERROR\n");
+        return;
+    }
+
+    FILE *f = fopen("stat_report.txt", "w");
+    if (!f) {
+        printf("ERROR\n");
+        free(data);
+        return;
+    }
+
+    // max_pixel
+    int max_sum = -1, max_x = 0, max_y = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            unsigned int pos = (y * width + x) * nbChannels;
+            int sum = data[pos] + data[pos + 1] + data[pos + 2];
+            if (sum > max_sum) {
+                max_sum = sum;
+                max_x = x;
+                max_y = y;
+            }
+        }
+    }
+    fprintf(f, "max_pixel (%d, %d): %d, %d, %d\n\n", max_x, max_y, data[(max_y * width + max_x) * nbChannels], data[(max_y * width + max_x) * nbChannels + 1], data[(max_y * width + max_x) * nbChannels + 2]);
+
+    // min_pixel
+    int min_sum = 3 * 255, min_x = 0, min_y = 0;
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            unsigned int pos = (y * width + x) * nbChannels;
+            int sum = data[pos] + data[pos + 1] + data[pos + 2];
+            if (sum < min_sum) {
+                min_sum = sum;
+                min_x = x;
+                min_y = y;
+            }
+        }
+    }
+    fprintf(f, "min_pixel (%d, %d): %d, %d, %d\n\n", min_x, min_y, data[(min_y * width + min_x) * nbChannels], data[(min_y * width + min_x) * nbChannels + 1], data[(min_y * width + min_x) * nbChannels + 2]);
+
+    // max_component R, G, B
+    char comps[3] = {'R', 'G', 'B'};
+    for (int c = 0; c < 3; ++c) {
+        int max_val = -1, max_cx = 0, max_cy = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int pos = (y * width + x) * nbChannels;
+                int val = data[pos + c];
+                if (val > max_val) {
+                    max_val = val;
+                    max_cx = x;
+                    max_cy = y;
+                }
+            }
+        }
+        fprintf(f, "max_component %c (%d, %d): %d\n\n", comps[c], max_cx, max_cy, max_val);
+    }
+
+    // min_component R, G, B
+    for (int c = 0; c < 3; ++c) {
+        int min_val = 256, min_cx = 0, min_cy = 0;
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                unsigned int pos = (y * width + x) * nbChannels;
+                int val = data[pos + c];
+                if (val < min_val) {
+                    min_val = val;
+                    min_cx = x;
+                    min_cy = y;
+                }
+            }
+        }
+        fprintf(f, "min_component %c (%d, %d): %d\n\n", comps[c], min_cx, min_cy, min_val);
+    }
+
+    fclose(f);
+    free(data);
+}
+
