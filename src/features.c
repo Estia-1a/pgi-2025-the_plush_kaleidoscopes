@@ -585,36 +585,41 @@ void mirror_total(char *source_path) {
     free(data);
     free(mirrored);
 }
-
-void scale_nearest(char *source_path, int scale_factor) {
+void scale_nearest(char *source_path, float scale) {
     int width, height, nbChannels;
     unsigned char *data;
 
-    if (read_image_data(source_path, &data, &width, &height, &nbChannels) == 0) {
-        printf("ERROR\n");
+    if (read_image_data(source_path, &data, &width, &height, &nbChannels) != 0) {
+        printf("ERREUR\n");
         return;
     }
 
-    int new_width = width * scale_factor;
-    int new_height = height * scale_factor;
-    unsigned char *scaled = malloc(new_width * new_height * nbChannels);
-    if (!scaled) {
-        printf("ERROR\n");
+    int new_width = (int)(width * scale);
+    int new_height = (int)(height * scale);
+
+    unsigned char *out_data = malloc(new_width * new_height * nbChannels);
+    if (!out_data) {
+        printf("ERREUR\n");
         free(data);
         return;
     }
 
     for (int y = 0; y < new_height; ++y) {
         for (int x = 0; x < new_width; ++x) {
-            int src_x = x / scale_factor;
-            int src_y = y / scale_factor;
-            unsigned char *src_pixel = data + (src_y * width + src_x) * nbChannels;
-            unsigned char *dst_pixel = scaled + (y * new_width + x) * nbChannels;
-            memcpy(dst_pixel, src_pixel, nbChannels);
+            int src_x = (int)(x / scale);
+            int src_y = (int)(y / scale);
+            if (src_x >= width) src_x = width - 1;
+            if (src_y >= height) src_y = height - 1;
+
+            for (int c = 0; c < nbChannels; ++c) {
+                out_data[(y * new_width + x) * nbChannels + c] =
+                    data[(src_y * width + src_x) * nbChannels + c];
+            }
         }
     }
 
-    write_image_data("image_out.bmp", scaled, new_width, new_height);
+    write_image_data("image_out.bmp", out_data, new_width, new_height);
+
     free(data);
-    free(scaled);
+    free(out_data);
 }
