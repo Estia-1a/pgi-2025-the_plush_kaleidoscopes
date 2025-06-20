@@ -1,0 +1,28 @@
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c: In function ‘stat_report’:
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:688:5: warning: implicit declaration of function ‘find_max_pixel’; did you mean ‘max_pixel’? [-Wimplicit-function-declaration]
+  688 |     find_max_pixel(data, width, height, nbChannels, &max_x, &max_y, &max_val);
+      |     ^~~~~~~~~~~~~~
+      |     max_pixel
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:693:5: warning: implicit declaration of function ‘find_min_pixel’; did you mean ‘min_pixel’? [-Wimplicit-function-declaration]
+  693 |     find_min_pixel(data, width, height, nbChannels, &min_x, &min_y, &min_val);
+      |     ^~~~~~~~~~~~~~
+      |     min_pixel
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:700:9: warning: implicit declaration of function ‘find_max_component’; did you mean ‘max_component’? [-Wimplicit-function-declaration]
+  700 |         find_max_component(data, width, height, nbChannels, comps[i], &x, &y, &val);
+      |         ^~~~~~~~~~~~~~~~~~
+      |         max_component
+/home/runner/work/pgi-2025-the_plush_kaleidoscopes/pgi-2025-the_plush_kaleidoscopes/src/features.c:707:9: warning: implicit declaration of function ‘find_min_component’; did you mean ‘min_component’? [-Wimplicit-function-declaration]
+  707 |         find_min_component(data, width, height, nbChannels, comps[i], &x, &y, &val);
+      |         ^~~~~~~~~~~~~~~~~~
+      |         min_component
+/usr/bin/ld: CMakeFiles/freud.dir/src/features.c.o: in function `stat_report':
+features.c:(.text+0x200d): undefined reference to `find_max_pixel'
+/usr/bin/ld: features.c:(.text+0x205a): undefined reference to `find_min_pixel'
+/usr/bin/ld: features.c:(.text+0x20e5): undefined reference to `find_max_component'
+/usr/bin/ld: features.c:(.text+0x2156): undefined reference to `find_min_component'
+collect2: error: ld returned 1 exit status
+gmake[2]: *** [CMakeFiles/freud.dir/build.make:151: freud] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/freud.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
+
+The process '/usr/local/bin/cmake' failed with exit code 2
